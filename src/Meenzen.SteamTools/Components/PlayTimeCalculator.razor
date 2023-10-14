@@ -1,0 +1,125 @@
+@using Meenzen.SteamTools.Services
+@using Meenzen.SteamTools.Models
+@using System.Text.Json
+@using Humanizer
+@using Meenzen.SteamTools.Components.Extensions
+@using Meenzen.SteamTools.Generated
+@inject SteamApi Api
+@inject ISnackbar Snackbar
+
+<MudText Typo="Typo.h2" Class="mt-4" GutterBottom="true" Align="Align.Center">Playtime per Platform</MudText>
+
+<MudButton OnClick="@(Api.GetOwnedGamesAsync)" Color="Color.Primary" EndIcon="@(Icons.Material.Filled.OpenInNew)">Open Steam API</MudButton>
+<MudTextField @bind-Value="_inputJson" Label="Paste the entire response" Variant="Variant.Filled" Lines="10" MaxLength="Int32.MaxValue"/>
+<MudButton OnClick="@Calculate" Color="Color.Primary" Variant="Variant.Filled" Class="mt-2">Calculate</MudButton>
+
+@if (_result is not null)
+{
+    <MudAlert Severity="Severity.Info" Class="mt-4 mb-2">Owned Games: @_result.GameCount</MudAlert>
+    <MudSimpleTable>
+        <tbody>
+        <tr>
+            <td>Total Playtime</td>
+            <td>@TotalPlaytime.TotalMinutes minutes</td>
+            <td>@TotalPlaytime.TotalHours.ToReadable() hours</td>
+            <td>@TotalPlaytime.Humanize(2)</td>
+        </tr>
+        <tr>
+            <td>Last 2 weeks</td>
+            <td>@TotalPlaytimeLast2Weeks.TotalMinutes minutes</td>
+            <td>@TotalPlaytimeLast2Weeks.TotalHours.ToReadable() hours</td>
+            <td>@TotalPlaytimeLast2Weeks.Humanize(2)</td>
+        </tr>
+        <tr>
+            <td>Windows Playtime</td>
+            <td>@WindowsPlaytime.TotalMinutes minutes</td>
+            <td>@WindowsPlaytime.TotalHours.ToReadable() hours</td>
+            <td>@WindowsPlaytime.Humanize(2)</td>
+        </tr>
+        <tr>
+            <td>Linux Playtime</td>
+            <td>@LinuxPlaytime.TotalMinutes minutes</td>
+            <td>@LinuxPlaytime.TotalHours.ToReadable() hours</td>
+            <td>@LinuxPlaytime.Humanize(2)</td>
+        </tr>
+        <tr>
+            <td>Mac Playtime</td>
+            <td>@MacPlaytime.TotalMinutes minutes</td>
+            <td>@MacPlaytime.TotalHours.ToReadable() hours</td>
+            <td>@MacPlaytime.Humanize(2)</td>
+        </tr>
+        <tr>
+            <td>Playtime Disconnected</td>
+            <td>@PlaytimeDisconnected.TotalMinutes minutes</td>
+            <td>@PlaytimeDisconnected.TotalHours.ToReadable() hours</td>
+            <td>@PlaytimeDisconnected.Humanize(2)</td>
+        </tr>
+        </tbody>
+    </MudSimpleTable>
+}
+
+@code
+{
+    private string _inputJson = string.Empty;
+    private OwnedGamesResponse? _result = null;
+
+    private TimeSpan TotalPlaytime { get; set; } = TimeSpan.Zero;
+    private TimeSpan TotalPlaytimeLast2Weeks { get; set; } = TimeSpan.Zero;
+    private TimeSpan WindowsPlaytime { get; set; } = TimeSpan.Zero;
+    private TimeSpan LinuxPlaytime { get; set; } = TimeSpan.Zero;
+    private TimeSpan MacPlaytime { get; set; } = TimeSpan.Zero;
+    private TimeSpan PlaytimeDisconnected { get; set; } = TimeSpan.Zero;
+
+    private void Calculate()
+    {
+        if (string.IsNullOrWhiteSpace(_inputJson))
+        {
+            return;
+        }
+
+        SteamResponse<OwnedGamesResponse>? response;
+        try
+        {
+            response = JsonSerializer.Deserialize(_inputJson, SourceGenerationContext.Default.SteamResponseOwnedGamesResponse);
+        }
+        catch (JsonException)
+        {
+            Snackbar.Add("Error parsing the provided response.", Severity.Error);
+            return;
+        }
+        
+        _result = response?.Response;
+
+        if (_result is null)
+        {
+            return;
+        }
+
+        long totalPlaytime = 0;
+        long totalPlaytimeLast2Weeks = 0;
+        long windowsPlaytime = 0;
+        long linuxPlaytime = 0;
+        long macPlaytime = 0;
+        long playtimeDisconnected = 0;
+
+        foreach (var game in _result.Games)
+        {
+            totalPlaytime += game.PlaytimeForever;
+            if (game.Playtime2Weeks is not null)
+            {
+                totalPlaytimeLast2Weeks += game.Playtime2Weeks.Value;
+            }
+            windowsPlaytime += game.PlaytimeWindowsForever;
+            linuxPlaytime += game.PlaytimeLinuxForever;
+            macPlaytime += game.PlaytimeMacForever;
+            playtimeDisconnected += game.PlaytimeDisconnected;
+        }
+
+        TotalPlaytime = TimeSpan.FromMinutes(totalPlaytime);
+        TotalPlaytimeLast2Weeks = TimeSpan.FromMinutes(totalPlaytimeLast2Weeks);
+        WindowsPlaytime = TimeSpan.FromMinutes(windowsPlaytime);
+        LinuxPlaytime = TimeSpan.FromMinutes(linuxPlaytime);
+        MacPlaytime = TimeSpan.FromMinutes(macPlaytime);
+        PlaytimeDisconnected = TimeSpan.FromMinutes(playtimeDisconnected);
+    }
+}

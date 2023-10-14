@@ -1,3 +1,23 @@
 ﻿@page "/"
+@using Meenzen.SteamTools.Services
+@inject SteamApi Api
 
-<PageTitle>Home</PageTitle>
+<PageTitle>SteamTools</PageTitle>
+
+@if (!Api.IsConfigured)
+{
+    <CredentialsWizard OnSave="@OnCredentialsSaved"/>
+}
+else
+{
+    <MudAlert Severity="Severity.Success">API credentials are configured, you can use the "Open Steam API" buttons.</MudAlert>
+}
+<PlayTimeCalculator/>
+
+@code
+{
+    private void OnCredentialsSaved()
+    {
+        StateHasChanged();
+    }
+}
