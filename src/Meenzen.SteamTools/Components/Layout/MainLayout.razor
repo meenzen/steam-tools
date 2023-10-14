@@ -1,19 +1,21 @@
 ﻿@inherits LayoutComponentBase
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode"/>
-<MudDialogProvider />
-<MudSnackbarProvider />
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
 <MudLayout>
     <MudAppBar Elevation="0">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())"/>
         <MudSpacer/>
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Href="https://github.com/meenzen/steam-tools" Target="_blank"/>
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen" Elevation="1">
         <MudDrawerHeader>
             <MudText Typo="Typo.h6">SteamTools</MudText>
-            <MudText Typo="Typo.caption">@GetAssemblyVersion()</MudText>
+            <MudTooltip Text="@Version">
+                <MudText Typo="Typo.caption">@ShortVersion</MudText>
+            </MudTooltip>
         </MudDrawerHeader>
         <NavMenu/>
     </MudDrawer>
@@ -30,14 +32,16 @@
 
     private bool _isDarkMode = true;
     private MudThemeProvider _mudThemeProvider = null!;
-    
-    private static string GetAssemblyVersion() => $"v{ThisAssembly.AssemblyInformationalVersion.Split('+')[0]}";
-    
+
+    private string Version { get; init; } = $"v{ThisAssembly.AssemblyInformationalVersion}";
+    private string ShortVersion { get; init; } = $"v{ThisAssembly.AssemblyInformationalVersion.Split('-')[0]}";
+
+
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
-    
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -47,7 +51,7 @@
             StateHasChanged();
         }
     }
-    
+
     private Task OnSystemPreferenceChanged(bool newValue)
     {
         _isDarkMode = newValue;
