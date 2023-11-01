@@ -15,6 +15,9 @@ builder.Services.AddMudServices(configuration =>
     configuration.SnackbarConfiguration.PreventDuplicates = true;
 });
 
+builder.Services.AddScoped(
+    _ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api/proxy/") }
+);
 builder.Services.AddScoped<SteamApi>();
 
 await builder.Build().RunAsync();
