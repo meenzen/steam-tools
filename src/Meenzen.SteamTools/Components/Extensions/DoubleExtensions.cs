@@ -1,5 +1,3 @@
-using Humanizer;
-
 namespace Meenzen.SteamTools.Components.Extensions;
 
 public static class DoubleExtensions
