@@ -5,12 +5,22 @@
 @using Meenzen.SteamTools.Generated
 @inject SteamApi Api
 @inject ISnackbar Snackbar
+@inject ILogger<PlayTimeCalculator> Logger
 
 <MudText Typo="Typo.h2" Class="mt-4" GutterBottom="true" Align="Align.Center">Playtime per Platform</MudText>
 
-<MudButton OnClick="@(Api.GetOwnedGamesAsync)" Color="Color.Primary" EndIcon="@(Icons.Material.Filled.OpenInNew)">Open Steam API</MudButton>
-<MudTextField @bind-Value="_inputJson" Label="Paste the entire response" Variant="Variant.Filled" Lines="10" MaxLength="Int32.MaxValue"/>
-<MudButton OnClick="@Calculate" Color="Color.Primary" Variant="Variant.Filled" Class="mt-2">Calculate</MudButton>
+@if (_loading)
+{
+    <MudText Align="Align.Center">
+        <MudProgressCircular Size="Size.Small" Class="mt-4"/>
+    </MudText>
+}
+else if (_result is null)
+{
+    <MudText Align="Align.Center">
+        <MudButton OnClick="@Load" Color="Color.Primary" Variant="Variant.Filled" Class="mt-2">Calculate</MudButton>
+    </MudText>
+}
 
 @if (_result is not null)
 {
@@ -53,8 +63,8 @@
 
 @code
 {
-    private string _inputJson = string.Empty;
     private OwnedGamesResponse? _result = null;
+    private bool _loading = false;
 
     private TimeSpan TotalPlaytime { get; set; } = TimeSpan.Zero;
     private TimeSpan TotalPlaytimeLast2Weeks { get; set; } = TimeSpan.Zero;
@@ -63,24 +73,31 @@
     private TimeSpan MacPlaytime { get; set; } = TimeSpan.Zero;
     private TimeSpan PlaytimeDisconnected { get; set; } = TimeSpan.Zero;
 
-    private void Calculate()
+    private async Task Load()
     {
-        if (string.IsNullOrWhiteSpace(_inputJson))
+        if (_loading)
         {
             return;
         }
 
-        SteamResponse<OwnedGamesResponse>? response;
+        _loading = true;
+
         try
         {
-            response = JsonSerializer.Deserialize(_inputJson, SourceGenerationContext.Default.SteamResponseOwnedGamesResponse);
+            SteamResponse<OwnedGamesResponse>? response = await Api.GetOwnedGamesAsync();
+            await Task.Run(() => Calculate(response));
         }
-        catch (JsonException)
+        catch (Exception e)
         {
-            Snackbar.Add("Error parsing the provided response.", Severity.Error);
-            return;
+            Snackbar.Add("Error loading owned games", Severity.Error);
+            Logger.LogError(e, "Error loading owned games");
         }
-        
+
+        _loading = false;
+    }
+
+    private void Calculate(SteamResponse<OwnedGamesResponse>? response)
+    {
         _result = response?.Response;
 
         if (_result is null)
