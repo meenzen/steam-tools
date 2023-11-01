@@ -9,16 +9,10 @@
 
 <MudText Typo="Typo.h2" Class="mt-4" GutterBottom="true" Align="Align.Center">Playtime per Platform</MudText>
 
-@if (_loading)
+@if (_result is null)
 {
     <MudText Align="Align.Center">
-        <MudProgressCircular Size="Size.Small" Class="mt-4"/>
-    </MudText>
-}
-else if (_result is null)
-{
-    <MudText Align="Align.Center">
-        <MudButton OnClick="@Load" Color="Color.Primary" Variant="Variant.Filled" Class="mt-2">Calculate</MudButton>
+        <LoadingButton OnClick="@Load" Loading="@_loading" Text="Calculate"/>
     </MudText>
 }
 
