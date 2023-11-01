@@ -9,12 +9,10 @@
 
 <MudText Typo="Typo.h2" Class="mt-4" GutterBottom="true" Align="Align.Center">Playtime per Platform</MudText>
 
-@if (_result is null)
-{
-    <MudText Align="Align.Center">
-        <LoadingButton OnClick="@Load" Loading="@_loading" Text="Calculate"/>
-    </MudText>
-}
+<MudStack Row="true" Justify="Justify.Center">
+    <MudCheckBox Label="Include Free Games" @bind-Checked="@_includeFreeGames"/>
+    <LoadingButton OnClick="@Load" Loading="@_loading" Text="Calculate"/>
+</MudStack>
 
 @if (_result is not null)
 {
@@ -59,6 +57,7 @@
 {
     private OwnedGamesResponse? _result = null;
     private bool _loading = false;
+    private bool _includeFreeGames = false;
 
     private TimeSpan TotalPlaytime { get; set; } = TimeSpan.Zero;
     private TimeSpan TotalPlaytimeLast2Weeks { get; set; } = TimeSpan.Zero;
@@ -78,7 +77,7 @@
 
         try
         {
-            SteamResponse<OwnedGamesResponse>? response = await Api.GetOwnedGamesAsync();
+            SteamResponse<OwnedGamesResponse>? response = await Api.GetOwnedGamesAsync(_includeFreeGames);
             await Task.Run(() => Calculate(response));
         }
         catch (Exception e)

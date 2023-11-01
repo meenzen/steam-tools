@@ -25,7 +25,7 @@ public class SteamApi
         _snackbar.Add("Please configure the Steam API key and Steam ID first.", Severity.Warning);
     }
 
-    public async Task<SteamResponse<OwnedGamesResponse>?> GetOwnedGamesAsync()
+    public async Task<SteamResponse<OwnedGamesResponse>?> GetOwnedGamesAsync(bool includeFree)
     {
         if (!IsConfigured)
         {
@@ -34,7 +34,7 @@ public class SteamApi
         }
 
         SteamResponse<OwnedGamesResponse>? result = await _client.GetFromJsonAsync(
-            $"IPlayerService/GetOwnedGames/v1/?key={ApiKey}&steamid={SteamId}",
+            $"IPlayerService/GetOwnedGames/v1/?key={ApiKey}&steamid={SteamId}&include_played_free_games={includeFree.ToString().ToLower()}",
             SourceGenerationContext.Default.SteamResponseOwnedGamesResponse
         );
         return result;
