@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meenzen.SteamTools", "src\Meenzen.SteamTools\Meenzen.SteamTools.csproj", "{D967EF82-3BA1-46C6-900B-E0DEFA06113E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meenzen.SteamTools.ApiProxy", "src\Meenzen.SteamTools.ApiProxy\Meenzen.SteamTools.ApiProxy.csproj", "{A65DB184-C3CE-43DE-9889-2DAA7565956D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{D967EF82-3BA1-46C6-900B-E0DEFA06113E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D967EF82-3BA1-46C6-900B-E0DEFA06113E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D967EF82-3BA1-46C6-900B-E0DEFA06113E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A65DB184-C3CE-43DE-9889-2DAA7565956D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A65DB184-C3CE-43DE-9889-2DAA7565956D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A65DB184-C3CE-43DE-9889-2DAA7565956D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A65DB184-C3CE-43DE-9889-2DAA7565956D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

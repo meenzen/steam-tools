@@ -15,9 +15,15 @@ builder.Services.AddMudServices(configuration =>
     configuration.SnackbarConfiguration.PreventDuplicates = true;
 });
 
-builder.Services.AddScoped(
-    _ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress + "api/proxy/") }
-);
+Uri proxyUri = new Uri(builder.HostEnvironment.BaseAddress + "api/proxy/");
+if (builder.HostEnvironment.IsDevelopment())
+{
+#pragma warning disable S1075
+    proxyUri = new Uri("http://localhost:5115");
+#pragma warning restore S1075
+}
+
+builder.Services.AddScoped(_ => new HttpClient { BaseAddress = proxyUri });
 builder.Services.AddScoped<SteamApi>();
 
 await builder.Build().RunAsync();
