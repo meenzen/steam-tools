@@ -20,6 +20,7 @@
         <NavMenu/>
     </MudDrawer>
     <MudMainContent>
+        <CredentialsWizard OnSave="@StateHasChanged"/>
         <MudContainer MaxWidth="MaxWidth.Large" Class="py-8">
             @Body
         </MudContainer>

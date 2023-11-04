@@ -17,9 +17,24 @@ public class SteamApi
         _client = client;
     }
 
-    public string ApiKey { get; set; } = string.Empty;
-    public ulong SteamId { get; set; } = 0;
-    public bool IsConfigured => !string.IsNullOrWhiteSpace(ApiKey) && SteamId != 0;
+    public ApiCredentials? Credentials { get; private set; }
+
+    public void Configure(ApiCredentials credentials)
+    {
+        if (!credentials.Valid)
+        {
+            throw new ArgumentException("The provided credentials are not valid.", nameof(credentials));
+        }
+
+        Credentials = credentials;
+    }
+
+    public void ResetConfiguration()
+    {
+        Credentials = null;
+    }
+
+    public bool IsConfigured => Credentials is not null;
 
     private void ShowConfigurationSnackbar()
     {
@@ -33,14 +48,14 @@ public class SteamApi
         bool includeExtendedAppInfo = true
     )
     {
-        if (!IsConfigured)
+        if (Credentials is null)
         {
             ShowConfigurationSnackbar();
             return null;
         }
 
         SteamResponse<OwnedGamesResponse>? result = await _client.GetFromJsonAsync(
-            $"IPlayerService/GetOwnedGames/v1/?key={ApiKey}&steamid={SteamId}&include_appinfo={includeAppInfo.ToParameter()}&include_played_free_games={includePlayedFreeGames.ToParameter()}&include_free_sub={includeFreeSub.ToParameter()}&include_extended_appinfo={includeExtendedAppInfo.ToParameter()}",
+            $"IPlayerService/GetOwnedGames/v1/?key={Credentials.ApiKey}&steamid={Credentials.SteamId}&include_appinfo={includeAppInfo.ToParameter()}&include_played_free_games={includePlayedFreeGames.ToParameter()}&include_free_sub={includeFreeSub.ToParameter()}&include_extended_appinfo={includeExtendedAppInfo.ToParameter()}",
             SourceGenerationContext.Default.SteamResponseOwnedGamesResponse
         );
         return result;

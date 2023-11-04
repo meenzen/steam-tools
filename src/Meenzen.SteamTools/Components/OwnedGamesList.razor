@@ -1,6 +1,6 @@
 @using Meenzen.SteamTools.Models
 
-<MudDataGrid Items="@Games" T="@OwnedGame" Height="600px">
+<MudDataGrid Items="@Games" T="@OwnedGame" FixedHeader="true" Virtualize="true" Height="600px">
     <Columns>
         <PropertyColumn Property="@(game => game.Appid)" Title="AppId" />
         <PropertyColumn Property="@(game => game.Name)" Title="Name" />

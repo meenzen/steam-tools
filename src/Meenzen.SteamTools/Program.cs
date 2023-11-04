@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Meenzen.SteamTools.Components;
@@ -9,10 +10,13 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
+builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMudServices(configuration =>
 {
     configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
     configuration.SnackbarConfiguration.PreventDuplicates = true;
+    configuration.SnackbarConfiguration.SnackbarVariant = Variant.Outlined;
+    configuration.SnackbarConfiguration.ShowCloseIcon = false;
 });
 
 Uri proxyUri = new Uri(builder.HostEnvironment.BaseAddress + "api/proxy/");
