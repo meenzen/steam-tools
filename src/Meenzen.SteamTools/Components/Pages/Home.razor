@@ -1,3 +1,26 @@
 ﻿@page "/"
 
 <PageTitle>SteamTools</PageTitle>
+
+<MudGrid Class="mt-2" Justify="Justify.SpaceAround">
+    <MudItem>
+        <MudCard Style="max-width: 400px">
+            <MudCardHeader>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.h6">
+                        Owned Games / Playtime per Platform
+                    </MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudText>
+                    This tool allows you to view all games you own on Steam and the playtime you have on each platform.
+                    Also shows the playtime while disconnected (or in offline mode) that Steam recently started tracking.
+                </MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Text" Color="Color.Primary" Href="/owned-games" FullWidth="true">Open Tool</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </MudItem>
+</MudGrid>
