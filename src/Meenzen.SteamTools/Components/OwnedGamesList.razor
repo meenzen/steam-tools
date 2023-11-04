@@ -1,10 +1,50 @@
 @using Meenzen.SteamTools.Models
+@using Meenzen.SteamTools.Extensions
 
-<MudDataGrid Items="@Games" T="@OwnedGame" FixedHeader="true" Virtualize="true" Height="600px">
+<MudDataGrid Items="@Games" T="@OwnedGame" Dense="true" Filterable="true" FixedHeader="true" Virtualize="true"
+             ColumnResizeMode="ResizeMode.Container" Height="800px" Class="mt-4">
     <Columns>
-        <PropertyColumn Property="@(game => game.Appid)" Title="AppId" />
-        <PropertyColumn Property="@(game => game.Name)" Title="Name" />
-        <PropertyColumn Property="@(game => game.LastPlayed)" Title="Last Played" />
+        <PropertyColumn Property="@(game => game.Appid)" Title="AppId" InitialDirection="SortDirection.Ascending"/>
+        <PropertyColumn Property="@(game => game.Name)" Title="Name" HeaderStyle="width: 400px;"/>
+        <TemplateColumn Title="Last Played" SortBy="@(game => game.LastPlayed)">
+            <CellTemplate>@context.Item?.LastPlayed.ToUiString()</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Windows" SortBy="@(game => game.PlaytimeWindowsForever)">
+            <CellTemplate>@(context.Item?.PlaytimeWindowsForever.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Linux" SortBy="@(game => game.PlaytimeLinuxForever)">
+            <CellTemplate>@(context.Item?.PlaytimeLinuxForever.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Mac" SortBy="@(game => game.PlaytimeMacForever)">
+            <CellTemplate>@(context.Item?.PlaytimeMacForever.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Total" SortBy="@(game => game.PlaytimeForever)">
+            <CellTemplate>@(context.Item?.PlaytimeForever.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Last 2 Weeks" SortBy="@(game => game.Playtime2Weeks ?? 0)">
+            <CellTemplate>@(context.Item?.Playtime2Weeks?.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Disconnected" SortBy="@(game => game.PlaytimeDisconnected)">
+            <CellTemplate>@(context.Item?.PlaytimeDisconnected.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Has DLC" SortBy="@(game => game.HasDlc)">
+            <CellTemplate>@(context.Item?.HasDlc.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Has Workshop" SortBy="@(game => game.HasWorkshop)">
+            <CellTemplate>@(context.Item?.HasWorkshop.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Has Market" SortBy="@(game => game.HasMarket)">
+            <CellTemplate>@(context.Item?.HasMarket.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Has Stats" SortBy="@(game => game.HasCommunityVisibleStats ?? false)">
+            <CellTemplate>@(context.Item?.HasCommunityVisibleStats?.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Has Leaderboards" SortBy="@(game => game.HasLeaderboards ?? false)">
+            <CellTemplate>@(context.Item?.HasLeaderboards?.ToUiString())</CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="Sort As" SortBy="@(game => game.SortAs ?? string.Empty)" HeaderStyle="width: 400px;">
+            <CellTemplate>@(context.Item?.SortAs)</CellTemplate>
+        </TemplateColumn>
     </Columns>
 </MudDataGrid>
 

@@ -15,7 +15,6 @@
 
 @if (_response is not null)
 {
-    <MudAlert Severity="Severity.Info" Class="mt-4 mb-2">Owned Games: @_response.GameCount</MudAlert>
     <PlayTimeCalculator Games="@_response.Games"/>
     <OwnedGamesList Games="@_response.Games"/>
 }
@@ -46,6 +45,8 @@
             Snackbar.Add("Error loading owned games", Severity.Error);
             Logger.LogError(e, "Error loading owned games");
         }
+
+        await Task.Delay(500);
 
         _loading = false;
     }

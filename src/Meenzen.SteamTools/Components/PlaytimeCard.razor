@@ -1,0 +1,30 @@
+@using Meenzen.SteamTools.Extensions
+<MudItem>
+    <MudPaper Class="pa-2">
+        @if (Icon is not null)
+        {
+            <MudText Align="Align.Center">
+                <MudIcon Icon="@Icon"/>
+            </MudText>
+        }
+        else
+        {
+            <MudText Align="Align.Center" Style="padding-bottom: 7px">
+                <strong>@Text</strong>
+            </MudText>
+        }
+        <MudText Typo="Typo.body1" Align="Align.Center">@Time.TotalHours.ToReadable() hours</MudText>
+    </MudPaper>
+</MudItem>
+
+@code
+{
+    [Parameter]
+    public string? Icon { get; set; }
+
+    [Parameter]
+    public string? Text { get; set; }
+
+    [Parameter, EditorRequired]
+    public TimeSpan Time { get; set; }
+}

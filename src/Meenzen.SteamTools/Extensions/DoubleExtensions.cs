@@ -1,4 +1,4 @@
-namespace Meenzen.SteamTools.Components.Extensions;
+namespace Meenzen.SteamTools.Extensions;
 
 public static class DoubleExtensions
 {

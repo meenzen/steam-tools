@@ -7,7 +7,7 @@ internal sealed class UnixTimestampConverter : JsonConverter<DateTimeOffset>
 {
     public override DateTimeOffset Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        return DateTimeOffset.FromUnixTimeMilliseconds(reader.GetInt64());
+        return DateTimeOffset.FromUnixTimeSeconds(reader.GetInt64());
     }
 
     public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)

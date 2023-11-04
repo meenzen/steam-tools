@@ -1,50 +1,30 @@
 @using Meenzen.SteamTools.Services
 @using Meenzen.SteamTools.Models
 @using System.Text.Json
-@using Meenzen.SteamTools.Components.Extensions
+@using Meenzen.SteamTools.Extensions
 @using Meenzen.SteamTools.Generated
 @inject SteamApi Api
 @inject ISnackbar Snackbar
 @inject ILogger<PlayTimeCalculator> Logger
 
-<MudText Typo="Typo.h2" Class="mt-4" GutterBottom="true" Align="Align.Center">Playtime per Platform</MudText>
-
 @if (Games.Count >= 1)
 {
-    <MudSimpleTable>
-        <tbody>
-        <tr>
-            <td>Total Playtime</td>
-            <td>@TotalPlaytime.TotalMinutes minutes</td>
-            <td>@TotalPlaytime.TotalHours.ToReadable() hours</td>
-        </tr>
-        <tr>
-            <td>Last 2 weeks</td>
-            <td>@TotalPlaytimeLast2Weeks.TotalMinutes minutes</td>
-            <td>@TotalPlaytimeLast2Weeks.TotalHours.ToReadable() hours</td>
-        </tr>
-        <tr>
-            <td>Windows Playtime</td>
-            <td>@WindowsPlaytime.TotalMinutes minutes</td>
-            <td>@WindowsPlaytime.TotalHours.ToReadable() hours</td>
-        </tr>
-        <tr>
-            <td>Linux Playtime</td>
-            <td>@LinuxPlaytime.TotalMinutes minutes</td>
-            <td>@LinuxPlaytime.TotalHours.ToReadable() hours</td>
-        </tr>
-        <tr>
-            <td>Mac Playtime</td>
-            <td>@MacPlaytime.TotalMinutes minutes</td>
-            <td>@MacPlaytime.TotalHours.ToReadable() hours</td>
-        </tr>
-        <tr>
-            <td>Playtime Disconnected</td>
-            <td>@PlaytimeDisconnected.TotalMinutes minutes</td>
-            <td>@PlaytimeDisconnected.TotalHours.ToReadable() hours</td>
-        </tr>
-        </tbody>
-    </MudSimpleTable>
+    <MudGrid Class="mt-2">
+        <MudItem>
+            <MudPaper Class="pa-2">
+                <MudText Align="Align.Center">
+                    <MudIcon Icon="@Icons.Custom.Brands.Steam"/>
+                    <MudText Typo="Typo.body1" Align="Align.Center">@Games.Count Games</MudText>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+        <PlaytimeCard Text="Total Playtime" Time="@TotalPlaytime"/>
+        <PlaytimeCard Text="Last two weeks" Time="@TotalPlaytimeLast2Weeks"/>
+        <PlaytimeCard Icon="@Icons.Custom.Brands.MicrosoftWindows" Time="@WindowsPlaytime"/>
+        <PlaytimeCard Icon="@Icons.Custom.Brands.Linux" Time="@LinuxPlaytime"/>
+        <PlaytimeCard Icon="@Icons.Custom.Brands.Apple" Time="@MacPlaytime"/>
+        <PlaytimeCard Text="Playtime Disconnected" Time="@PlaytimeDisconnected"/>
+    </MudGrid>
 }
 
 @code
