@@ -9,14 +9,8 @@
 
 <MudText Typo="Typo.h2" Class="mt-4" GutterBottom="true" Align="Align.Center">Playtime per Platform</MudText>
 
-<MudStack Row="true" Justify="Justify.Center">
-    <MudCheckBox Label="Include Free Games" @bind-Checked="@_includeFreeGames"/>
-    <LoadingButton OnClick="@Load" Loading="@_loading" Text="Calculate"/>
-</MudStack>
-
-@if (_result is not null)
+@if (Games.Count >= 1)
 {
-    <MudAlert Severity="Severity.Info" Class="mt-4 mb-2">Owned Games: @_result.GameCount</MudAlert>
     <MudSimpleTable>
         <tbody>
         <tr>
@@ -55,9 +49,8 @@
 
 @code
 {
-    private OwnedGamesResponse? _result = null;
-    private bool _loading = false;
-    private bool _includeFreeGames = false;
+    [Parameter, EditorRequired]
+    public List<OwnedGame> Games { get; set; } = new();
 
     private TimeSpan TotalPlaytime { get; set; } = TimeSpan.Zero;
     private TimeSpan TotalPlaytimeLast2Weeks { get; set; } = TimeSpan.Zero;
@@ -66,34 +59,14 @@
     private TimeSpan MacPlaytime { get; set; } = TimeSpan.Zero;
     private TimeSpan PlaytimeDisconnected { get; set; } = TimeSpan.Zero;
 
-    private async Task Load()
+    protected override void OnParametersSet()
     {
-        if (_loading)
-        {
-            return;
-        }
-
-        _loading = true;
-
-        try
-        {
-            SteamResponse<OwnedGamesResponse>? response = await Api.GetOwnedGamesAsync(_includeFreeGames);
-            await Task.Run(() => Calculate(response));
-        }
-        catch (Exception e)
-        {
-            Snackbar.Add("Error loading owned games", Severity.Error);
-            Logger.LogError(e, "Error loading owned games");
-        }
-
-        _loading = false;
+        Calculate();
     }
 
-    private void Calculate(SteamResponse<OwnedGamesResponse>? response)
+    private void Calculate()
     {
-        _result = response?.Response;
-
-        if (_result is null)
+        if (Games.Count < 1)
         {
             return;
         }
@@ -105,7 +78,7 @@
         long macPlaytime = 0;
         long playtimeDisconnected = 0;
 
-        foreach (var game in _result.Games)
+        foreach (OwnedGame game in Games)
         {
             totalPlaytime += game.PlaytimeForever;
             if (game.Playtime2Weeks is not null)

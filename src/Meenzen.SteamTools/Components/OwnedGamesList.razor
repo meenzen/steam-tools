@@ -1,0 +1,15 @@
+@using Meenzen.SteamTools.Models
+
+<MudDataGrid Items="@Games" T="@OwnedGame" Height="600px">
+    <Columns>
+        <PropertyColumn Property="@(game => game.Appid)" Title="AppId" />
+        <PropertyColumn Property="@(game => game.Name)" Title="Name" />
+        <PropertyColumn Property="@(game => game.LastPlayed)" Title="Last Played" />
+    </Columns>
+</MudDataGrid>
+
+@code
+{
+    [Parameter, EditorRequired]
+    public List<OwnedGame> Games { get; set; } = new();
+}

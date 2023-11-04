@@ -1,0 +1,54 @@
+@page "/owned-games"
+@using Meenzen.SteamTools.Models
+@using Meenzen.SteamTools.Services
+@inject SteamApi Api
+@inject ISnackbar Snackbar
+@inject ILogger<PlayTimeCalculator> Logger
+
+<PageTitle>SteamTools - Owned Games</PageTitle>
+
+<CredentialsWizard OnSave="@StateHasChanged"/>
+
+<MudStack Row="true" Justify="Justify.Center">
+    <MudCheckBox Label="Include played free games" @bind-Checked="@_includeFreeGames"/>
+    <MudCheckBox Label="Include games in the free sub" @bind-Checked="@_includeFreeSub"/>
+    <LoadingButton OnClick="@Load" Loading="@_loading" Text="Load"/>
+</MudStack>
+
+@if (_response is not null)
+{
+    <MudAlert Severity="Severity.Info" Class="mt-4 mb-2">Owned Games: @_response.GameCount</MudAlert>
+    <PlayTimeCalculator Games="@_response.Games"/>
+    <OwnedGamesList Games="@_response.Games"/>
+}
+
+@code
+{
+    private OwnedGamesResponse? _response;
+    private bool _loading;
+    private bool _includeFreeGames = true;
+    private bool _includeFreeSub;
+
+    private async Task Load()
+    {
+        if (_loading)
+        {
+            return;
+        }
+
+        _loading = true;
+
+        try
+        {
+            SteamResponse<OwnedGamesResponse>? response = await Api.GetOwnedGamesAsync(includePlayedFreeGames: _includeFreeGames, includeFreeSub: _includeFreeSub);
+            _response = response?.Response;
+        }
+        catch (Exception e)
+        {
+            Snackbar.Add("Error loading owned games", Severity.Error);
+            Logger.LogError(e, "Error loading owned games");
+        }
+
+        _loading = false;
+    }
+}

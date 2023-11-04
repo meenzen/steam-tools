@@ -1,23 +1,5 @@
 ﻿@page "/"
-@using Meenzen.SteamTools.Services
-@inject SteamApi Api
 
 <PageTitle>SteamTools</PageTitle>
 
-@if (!Api.IsConfigured)
-{
-    <CredentialsWizard OnSave="@OnCredentialsSaved"/>
-}
-else
-{
-    <MudAlert Severity="Severity.Success">API credentials are configured, you can now use the tool.</MudAlert>
-}
-<PlayTimeCalculator/>
-
-@code
-{
-    private void OnCredentialsSaved()
-    {
-        StateHasChanged();
-    }
-}
+<CredentialsWizard OnSave="@StateHasChanged"/>
