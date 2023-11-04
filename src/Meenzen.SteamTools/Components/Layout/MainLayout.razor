@@ -35,7 +35,7 @@
     private MudThemeProvider _mudThemeProvider = null!;
 
     private string Version { get; init; } = $"v{ThisAssembly.AssemblyInformationalVersion}";
-    private string ShortVersion { get; init; } = $"v{ThisAssembly.AssemblyInformationalVersion.Split('-')[0]}";
+    private string ShortVersion { get; init; } = $"v{ThisAssembly.AssemblyInformationalVersion.Split('+')[0]}";
 
 
     void DrawerToggle()
