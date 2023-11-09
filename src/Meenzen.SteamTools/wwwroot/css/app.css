@@ -58,7 +58,7 @@ h1:focus {
 }
 
 .loading-text:after {
-    content: var(--blazor-load-percentage-text, "Loading");
+    content: var(--blazor-load-percentage-text, "0%");
 }
 
 code {
