@@ -1,4 +1,9 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Components.WebAssembly.Hosting
+@inherits LayoutComponentBase
+@inject IOptions<SteamToolsOptions> Options
+@inject IWebAssemblyHostEnvironment HostEnvironment
+@inject ISnackbar Snackbar
 
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode"/>
 <MudDialogProvider/>
@@ -43,6 +48,11 @@
         _drawerOpen = !_drawerOpen;
     }
 
+    protected override void OnInitialized()
+    {
+        ShowSnackbars();
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -58,5 +68,31 @@
         _isDarkMode = newValue;
         StateHasChanged();
         return Task.CompletedTask;
+    }
+
+    private void ShowSnackbars()
+    {
+        if (HostEnvironment.IsDevelopment())
+        {
+            Snackbar.Add($"Running in development mode, api proxy: {Options.Value.ProxyUri}", Severity.Info);
+        }
+        else if (Options.Value.IsPreviewDeployment)
+        {
+            Snackbar.Add(@<div>This is a preview deployment of SteamTools. It might be unstable or broken. The latest stable version is <MudLink Href="https://steam.mnzn.dev" Style="font-size: inherit">available here</MudLink>.</div>, Severity.Warning, options =>
+            {
+                options.RequireInteraction = true;
+                options.ShowCloseIcon = true;
+                options.CloseAfterNavigation = false;
+            });
+        }
+        else if (!Options.Value.IsOfficialDeployment)
+        {
+            Snackbar.Add(@<div>This is a forked deployment of SteamTools so it might be outdated. Consider using the <MudLink Href="https://steam.mnzn.dev" Style="font-size: inherit">official deployment</MudLink>.</div>, Severity.Warning, options =>
+            {
+                options.RequireInteraction = true;
+                options.ShowCloseIcon = true;
+                options.CloseAfterNavigation = false;
+            });
+        }
     }
 }
