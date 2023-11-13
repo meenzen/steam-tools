@@ -1,8 +1,10 @@
 using Blazored.LocalStorage;
+using Meenzen.SteamTools;
 using Meenzen.SteamTools.Components;
 using Meenzen.SteamTools.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.Options;
 using MudBlazor;
 using MudBlazor.Services;
 
@@ -21,15 +23,25 @@ builder
         configuration.SnackbarConfiguration.ShowCloseIcon = false;
     });
 
-Uri proxyUri = new Uri(builder.HostEnvironment.BaseAddress + "api/proxy/");
-if (builder.HostEnvironment.IsDevelopment())
-{
-#pragma warning disable S1075
-    proxyUri = new Uri("http://localhost:5115");
-#pragma warning restore S1075
-}
+builder
+    .Services
+    .Configure<SteamToolsOptions>(options =>
+    {
+        options.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
 
-builder.Services.AddScoped(_ => new HttpClient { BaseAddress = proxyUri });
+        if (builder.HostEnvironment.IsDevelopment())
+        {
+            options.ProxyUri = new Uri("http://localhost:5115");
+        }
+        else
+        {
+            options.ProxyUri = new Uri(builder.HostEnvironment.BaseAddress + "api/proxy/");
+        }
+    });
+
+var options = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<SteamToolsOptions>>();
+
+builder.Services.AddScoped(_ => new HttpClient { BaseAddress = options.Value.ProxyUri });
 builder.Services.AddScoped<SteamApi>();
 
 await builder.Build().RunAsync();
