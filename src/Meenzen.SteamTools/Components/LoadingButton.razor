@@ -1,4 +1,4 @@
-<MudButton Disabled="@Loading" OnClick="@Load" Variant="Variant.Filled" Color="Color.Primary">
+<MudButton Disabled="@Loading" OnClick="@Load" Variant="Variant.Filled" Color="Color.Primary" Class="mb-2">
     @if (Loading)
     {
         <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -14,13 +14,13 @@
 {
     [Parameter]
     public string Text { get; set; } = "Load";
-    
+
     [Parameter, EditorRequired]
     public bool Loading { get; set; } = false;
-    
+
     [Parameter, EditorRequired]
     public EventCallback OnClick { get; set; }
-    
+
     private async Task Load()
     {
         await OnClick.InvokeAsync();

@@ -7,14 +7,17 @@
 
 <PageTitle>SteamTools - Owned Games</PageTitle>
 
-<MudStack Row="true" Justify="Justify.Center">
-    <MudCheckBox Label="Include played free games" @bind-Checked="@_includeFreeGames"/>
-    <MudCheckBox Label="Include games in the free sub" @bind-Checked="@_includeFreeSub"/>
-    <LoadingButton OnClick="@Load" Loading="@_loading" Text="Load"/>
-</MudStack>
+<MudContainer MaxWidth="MaxWidth.ExtraSmall">
+    <MudStack Row="false" Justify="Justify.Center">
+        <MudCheckBox Label="Include played free games" @bind-Checked="@_includeFreeGames"/>
+        <MudCheckBox Label="Include games in the free sub" @bind-Checked="@_includeFreeSub"/>
+        <LoadingButton OnClick="@Load" Loading="@_loading" Text="Load"/>
+    </MudStack>
+</MudContainer>
 
 @if (_response is not null)
 {
+    <MudDivider Class="mt-4"/>
     <PlayTimeCalculator Games="@_response.Games"/>
     <OwnedGamesList Games="@_response.Games"/>
 }
