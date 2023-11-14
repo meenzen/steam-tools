@@ -8,12 +8,6 @@
         "husky"
       ]
     },
-    "dotnet-ef": {
-      "version": "7.0.13",
-      "commands": [
-        "dotnet-ef"
-      ]
-    },
     "csharpier": {
       "version": "0.26.1",
       "commands": [
