@@ -1,5 +1,3 @@
-[![GitHub](https://img.shields.io/github/license/meenzen/Streamlabs.SocketClient.svg)](https://github.com/meenzen/Streamlabs.SocketClient/blob/main/LICENSE)
-
 # Meenzen.SteamTools
 
 A Web App that interacts with the Steam API. Allows calculating stats like the total playtime per platform.
@@ -34,7 +32,7 @@ commit messages consistent.
 
 ## Acknowledgements
 
-- [Steam Web API Documentation](https://steamapi.xpaw.me/) by [Xpaw](https://github.com/xPaw) provides a great overview of the available Steam API endpoints.
+- [Steam Web API Documentation](https://steamapi.xpaw.me/) by [xPaw](https://github.com/xPaw) provides a great overview of the available Steam API endpoints.
 
 ## License
 
