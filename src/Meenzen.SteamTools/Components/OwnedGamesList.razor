@@ -2,7 +2,7 @@
 @using Meenzen.SteamTools.Extensions
 
 <MudHidden Breakpoint="@Breakpoint.SmAndDown" @bind-IsHidden="@_isHidden">
-    <MudDataGrid Items="@Games" T="@OwnedGame" Dense="true" Filterable="true" FixedHeader="true" Virtualize="true"
+    <MudDataGrid Items="@Games" T="@OwnedGame" Dense="true" Filterable="true" FixedHeader="true" Virtualize="true" OverscanCount="20"
                  ColumnResizeMode="ResizeMode.Container" Height="800px" Class="mt-4">
         <Columns>
             <PropertyColumn Property="@(game => game.Appid)" Title="AppId" InitialDirection="SortDirection.Ascending"/>
