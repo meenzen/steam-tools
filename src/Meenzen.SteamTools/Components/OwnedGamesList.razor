@@ -1,7 +1,7 @@
 @using Meenzen.SteamTools.Models
 @using Meenzen.SteamTools.Extensions
 
-<MudHidden Breakpoint="@Breakpoint.SmAndDown" @bind-IsHidden="@_isHidden">
+<MudHidden Breakpoint="@Breakpoint.SmAndDown" @bind-Hidden="@_isHidden">
     <MudDataGrid Items="@Games" T="@OwnedGame" Dense="true" Filterable="true" FixedHeader="true" Virtualize="true" OverscanCount="20"
                  ColumnResizeMode="ResizeMode.Container" Height="800px" Class="mt-4">
         <Columns>

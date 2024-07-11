@@ -9,8 +9,8 @@
 
 <MudContainer MaxWidth="MaxWidth.ExtraSmall">
     <MudStack Row="false" Justify="Justify.Center">
-        <MudCheckBox Label="Include played free games" @bind-Checked="@_includeFreeGames"/>
-        <MudCheckBox Label="Include games in the free sub" @bind-Checked="@_includeFreeSub"/>
+        <MudCheckBox Label="Include played free games" @bind-Value="@_includeFreeGames"/>
+        <MudCheckBox Label="Include games in the free sub" @bind-Value="@_includeFreeSub"/>
         <LoadingButton OnClick="@Load" Loading="@_loading" Text="Load"/>
     </MudStack>
 </MudContainer>
