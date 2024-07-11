@@ -3,23 +3,21 @@ using AspNetCore.Proxy;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLogging(logging => logging.AddSimpleConsole(options => options.SingleLine = true));
-builder
-    .Services
-    .AddCors(options =>
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
     {
-        options.AddDefaultPolicy(builder =>
-        {
-            builder.AllowAnyOrigin();
-            builder.AllowAnyHeader();
-            builder.AllowAnyMethod();
-        });
+        policy.AllowAnyOrigin();
+        policy.AllowAnyHeader();
+        policy.AllowAnyMethod();
     });
+});
 builder.Services.AddProxies();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseCors();
 app.RunProxy(proxy => proxy.UseHttp("https://api.steampowered.com"));
 
-app.Run();
+await app.RunAsync();
