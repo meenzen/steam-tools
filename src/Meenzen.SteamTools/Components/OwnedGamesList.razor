@@ -2,51 +2,28 @@
 @using Meenzen.SteamTools.Extensions
 
 <MudHidden Breakpoint="@Breakpoint.SmAndDown" @bind-Hidden="@_isHidden">
-    <MudDataGrid Items="@Games" T="@OwnedGame" Dense="true" Filterable="true" FixedHeader="true" Virtualize="true" OverscanCount="20"
-                 ColumnResizeMode="ResizeMode.Container" Height="800px" Class="mt-4">
+    <MudDataGrid Items="@Games" T="@OwnedGame" Dense="true" FixedHeader="true" RowsPerPage="23" Virtualize="true" OverscanCount="20" Hover="true"
+                 ColumnResizeMode="ResizeMode.Container" Height="800px" Class="mt-4" FilterCaseSensitivity="DataGridFilterCaseSensitivity.Ignore">
         <Columns>
-            <PropertyColumn Property="@(game => game.Appid)" Title="AppId" InitialDirection="SortDirection.Ascending"/>
-            <PropertyColumn Property="@(game => game.Name)" Title="Name" HeaderStyle="width: 400px;"/>
-            <TemplateColumn Title="Last Played" SortBy="@(game => game.LastPlayed)">
-                <CellTemplate>@context.Item?.LastPlayed.ToUiString()</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Windows" SortBy="@(game => game.PlaytimeWindowsForever)">
-                <CellTemplate>@(context.Item?.PlaytimeWindowsForever.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Linux" SortBy="@(game => game.PlaytimeLinuxForever)">
-                <CellTemplate>@(context.Item?.PlaytimeLinuxForever.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Mac" SortBy="@(game => game.PlaytimeMacForever)">
-                <CellTemplate>@(context.Item?.PlaytimeMacForever.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Total" SortBy="@(game => game.PlaytimeForever)">
-                <CellTemplate>@(context.Item?.PlaytimeForever.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Last 2 Weeks" SortBy="@(game => game.Playtime2Weeks ?? 0)">
-                <CellTemplate>@(context.Item?.Playtime2Weeks?.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Disconnected" SortBy="@(game => game.PlaytimeDisconnected)">
-                <CellTemplate>@(context.Item?.PlaytimeDisconnected.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Has DLC" SortBy="@(game => game.HasDlc)">
-                <CellTemplate>@(context.Item?.HasDlc.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Has Workshop" SortBy="@(game => game.HasWorkshop)">
-                <CellTemplate>@(context.Item?.HasWorkshop.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Has Market" SortBy="@(game => game.HasMarket)">
-                <CellTemplate>@(context.Item?.HasMarket.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Has Stats" SortBy="@(game => game.HasCommunityVisibleStats ?? false)">
-                <CellTemplate>@(context.Item?.HasCommunityVisibleStats?.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Has Leaderboards" SortBy="@(game => game.HasLeaderboards ?? false)">
-                <CellTemplate>@(context.Item?.HasLeaderboards?.ToUiString())</CellTemplate>
-            </TemplateColumn>
-            <TemplateColumn Title="Sort As" SortBy="@(game => game.SortAs ?? string.Empty)" HeaderStyle="width: 400px;">
-                <CellTemplate>@(context.Item?.SortAs)</CellTemplate>
-            </TemplateColumn>
+            <PropertyColumn Property="@(game => game.Appid)" Filterable="true" Title="AppId" InitialDirection="SortDirection.Ascending"/>
+            <PropertyColumn Property="@(game => game.Name)" Filterable="true" Title="Name" HeaderStyle="width: 400px;"/>
+            <PropertyColumn Property="@(game => game.LastPlayed.ToUiString())" SortBy="@(game => game.LastPlayed)" Title="Last Played"/>
+            <PropertyColumn Property="@(game => game.PlaytimeWindowsForever)" SortBy="@(game => game.PlaytimeWindowsForever)" Title="Windows"/>
+            <PropertyColumn Property="@(game => game.PlaytimeLinuxForever.ToUiString())" SortBy="@(game => game.PlaytimeLinuxForever)" Title="Linux"/>
+            <PropertyColumn Property="@(game => game.PlaytimeMacForever.ToUiString())" SortBy="@(game => game.PlaytimeMacForever)" Title="Mac"/>
+            <PropertyColumn Property="@(game => game.PlaytimeForever.ToUiString())" SortBy="@(game => game.PlaytimeForever)" Title="Total"/>
+            <PropertyColumn Property="@(game => (game.Playtime2Weeks ?? 0).ToUiString())" SortBy="@(game => game.Playtime2Weeks ?? 0)" Title="Last 2 Weeks"/>
+            <PropertyColumn Property="@(game => game.PlaytimeDisconnected.ToUiString())" SortBy="@(game => game.PlaytimeDisconnected)" Title="Disconnected"/>
+            <PropertyColumn Property="@(game => game.HasDlc.ToUiString())" SortBy="@(game => game.HasDlc)" Title="Has DLC"/>
+            <PropertyColumn Property="@(game => game.HasWorkshop.ToUiString())" SortBy="@(game => game.HasWorkshop)" Title="Has Workshop"/>
+            <PropertyColumn Property="@(game => game.HasMarket.ToUiString())" SortBy="@(game => game.HasMarket)" Title="Has Market"/>
+            <PropertyColumn Property="@(game => (game.HasCommunityVisibleStats ?? false).ToUiString())" SortBy="@(game => game.HasCommunityVisibleStats ?? false)" Title="Has Stats"/>
+            <PropertyColumn Property="@(game => (game.HasLeaderboards ?? false).ToUiString())" SortBy="@(game => game.HasLeaderboards ?? false)" Title="Has Leaderboards"/>
+            <PropertyColumn Property="@(game => game.SortAs ?? string.Empty)" Filterable="true" Title="Sort As" HeaderStyle="width: 400px;"/>
         </Columns>
+        <PagerContent>
+            <MudDataGridPager T="@OwnedGame" PageSizeOptions="@([23, 50, 100, int.MaxValue])"/>
+        </PagerContent>
     </MudDataGrid>
 </MudHidden>
 
@@ -62,5 +39,5 @@
     private bool _isHidden = true;
 
     [Parameter, EditorRequired]
-    public List<OwnedGame> Games { get; set; } = new();
+    public List<OwnedGame> Games { get; set; } = [];
 }
