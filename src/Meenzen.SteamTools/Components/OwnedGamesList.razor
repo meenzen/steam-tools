@@ -8,7 +8,7 @@
             <PropertyColumn Property="@(game => game.Appid)" Filterable="true" Title="AppId" InitialDirection="SortDirection.Ascending"/>
             <PropertyColumn Property="@(game => game.Name)" Filterable="true" Title="Name" HeaderStyle="width: 400px;"/>
             <PropertyColumn Property="@(game => game.LastPlayed.ToUiString())" SortBy="@(game => game.LastPlayed)" Title="Last Played"/>
-            <PropertyColumn Property="@(game => game.PlaytimeWindowsForever)" SortBy="@(game => game.PlaytimeWindowsForever)" Title="Windows"/>
+            <PropertyColumn Property="@(game => game.PlaytimeWindowsForever.ToUiString())" SortBy="@(game => game.PlaytimeWindowsForever)" Title="Windows"/>
             <PropertyColumn Property="@(game => game.PlaytimeLinuxForever.ToUiString())" SortBy="@(game => game.PlaytimeLinuxForever)" Title="Linux"/>
             <PropertyColumn Property="@(game => game.PlaytimeMacForever.ToUiString())" SortBy="@(game => game.PlaytimeMacForever)" Title="Mac"/>
             <PropertyColumn Property="@(game => game.PlaytimeForever.ToUiString())" SortBy="@(game => game.PlaytimeForever)" Title="Total"/>
