@@ -21,7 +21,7 @@ If you'd like to deploy this app to your own Cloudflare Account, you can do so b
    - Production branch: `main`
    - Framework preset: `None`
    - Build command: `./cloudflare-build.sh`
-   - Build output directory: `/src/Meenzen.SteamTools/bin/Release/net8.0/publish/wwwroot`
+   - Build output directory: `/artifacts/publish/Meenzen.SteamTools/release/wwwroot`
 8. Click "Save and Deploy"
 9. Profit
 
