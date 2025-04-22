@@ -4,15 +4,11 @@
   "tools": {
     "husky": {
       "version": "0.7.2",
-      "commands": [
-        "husky"
-      ]
+      "commands": ["husky"]
     },
     "csharpier": {
       "version": "1.0.0",
-      "commands": [
-        "dotnet-csharpier"
-      ]
+      "commands": ["csharpier"]
     }
   }
 }

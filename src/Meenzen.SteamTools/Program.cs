@@ -13,31 +13,27 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddBlazoredLocalStorage();
-builder
-    .Services
-    .AddMudServices(configuration =>
-    {
-        configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
-        configuration.SnackbarConfiguration.PreventDuplicates = true;
-        configuration.SnackbarConfiguration.SnackbarVariant = Variant.Outlined;
-        configuration.SnackbarConfiguration.ShowCloseIcon = false;
-    });
+builder.Services.AddMudServices(configuration =>
+{
+    configuration.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
+    configuration.SnackbarConfiguration.PreventDuplicates = true;
+    configuration.SnackbarConfiguration.SnackbarVariant = Variant.Outlined;
+    configuration.SnackbarConfiguration.ShowCloseIcon = false;
+});
 
-builder
-    .Services
-    .Configure<SteamToolsOptions>(options =>
-    {
-        options.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+builder.Services.Configure<SteamToolsOptions>(options =>
+{
+    options.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
 
-        if (builder.HostEnvironment.IsDevelopment())
-        {
-            options.ProxyUri = new Uri("http://localhost:5115");
-        }
-        else
-        {
-            options.ProxyUri = new Uri(builder.HostEnvironment.BaseAddress + "api/proxy/");
-        }
-    });
+    if (builder.HostEnvironment.IsDevelopment())
+    {
+        options.ProxyUri = new Uri("http://localhost:5115");
+    }
+    else
+    {
+        options.ProxyUri = new Uri(builder.HostEnvironment.BaseAddress + "api/proxy/");
+    }
+});
 
 var options = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<SteamToolsOptions>>();
 
