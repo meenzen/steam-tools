@@ -4,11 +4,17 @@
   "tools": {
     "husky": {
       "version": "0.7.2",
-      "commands": ["husky"]
+      "commands": [
+        "husky"
+      ],
+      "rollForward": true
     },
     "csharpier": {
       "version": "1.1.1",
-      "commands": ["csharpier"]
+      "commands": [
+        "csharpier"
+      ],
+      "rollForward": true
     }
   }
 }
