@@ -16,7 +16,7 @@
       Version="10.0.0-rc.2.25502.107"
       PrivateAssets="all"
     />
-    <PackageReference Include="MudBlazor" Version="8.13.0" />
+    <PackageReference Include="MudBlazor" Version="8.14.0" />
   </ItemGroup>
   <ItemGroup>
     <StaticWebAssetFingerprintPattern Include="JS" Pattern="*.js" Expression="#[.{fingerprint}]!" />
