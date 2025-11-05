@@ -47,7 +47,11 @@ h1:focus {
 }
 
 .loading-bar {
-    transform: translateX(calc(var(--blazor-load-percentage, 0%) - 100%))
+    transform: translateX(calc(var(--blazor-load-percentage, 0%) - 100%));
+}
+
+.loading, .loading-bar {
+    transition: none!important;
 }
 
 .loading-text {
