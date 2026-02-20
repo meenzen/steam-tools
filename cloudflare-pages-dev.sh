@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 dotnet publish -c Release
-npx wrangler pages dev publish/Meenzen.SteamTools/release/wwwroot
+npx wrangler pages dev artifacts/publish/Meenzen.SteamTools/release/wwwroot
