@@ -7,7 +7,9 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
+#pragma warning disable S5122
         policy.AllowAnyOrigin();
+#pragma warning restore S5122
         policy.AllowAnyHeader();
         policy.AllowAnyMethod();
     });
